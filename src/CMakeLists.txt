@@ -1,5 +1,5 @@
 
-CUDA_ADD_LIBRARY(popsift
+add_library(popsift
         popsift/popsift.cpp popsift/popsift.h
         popsift/features.cu popsift/features.h
         popsift/sift_constants.cu popsift/sift_constants.h
@@ -46,20 +46,19 @@ set(popsift_generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
 # BUILD_INTERFACE allows to include the directory with source only when target is
 # built in the building tree (ie, not from an install location)
 target_include_directories(popsift
-            PUBLIC
-            $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
-            $<BUILD_INTERFACE:${popsift_generated_dir}>
-            $<BUILD_INTERFACE:${popsift_generated_dir}/popsift>
-            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/>
-            ${CUDA_INCLUDE_DIRS})
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
+        $<BUILD_INTERFACE:${popsift_generated_dir}>
+        $<BUILD_INTERFACE:${popsift_generated_dir}/popsift>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/>
+)
 
 
 set_target_properties(popsift PROPERTIES VERSION ${PROJECT_VERSION})
-set_target_properties(popsift PROPERTIES DEBUG_POSTFIX "d")
 
 # cannot use PRIVATE here as there is a bug in FindCUDA and CUDA_ADD_LIBRARY
 # https://gitlab.kitware.com/cmake/cmake/issues/16097
-target_link_libraries(popsift ${CUDA_CUDADEVRT_LIBRARY} ${CUDA_CUBLAS_LIBRARIES} Threads::Threads)
+target_link_libraries(popsift CUDA::cudart CUDA::cublas Threads::Threads)
 
 
 # EXPORTING THE LIBRARY
@@ -101,49 +100,6 @@ configure_package_config_file("${PROJECT_SOURCE_DIR}/cmake/Config.cmake.in"
 configure_file("${PROJECT_SOURCE_DIR}/cmake/version.hpp.in" ${popsift_version_header_name} @ONLY)
 # config file
 configure_file("${PROJECT_SOURCE_DIR}/cmake/sift_config.h.in" ${popsift_config_header_name} @ONLY)
-
-
-# Targets:
-#   * <prefix>/lib/libpopsift.a
-#   * header location after install: <prefix>/include/
-#   * headers can be included by C++ code `#include <popsift/popsift.h>`
-install(TARGETS popsift
-        EXPORT "${popsift_targets_export_name}"
-        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-        ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-        INCLUDES DESTINATION "${popsift_include_install_dir}")
-
-# Headers:
-install(DIRECTORY "popsift"
-        DESTINATION "${popsift_include_install_dir}"
-        FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h")
-
-install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/popsift"
-        DESTINATION "${popsift_include_install_dir}"
-        FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h")
-
-# Config
-#   * <prefix>/lib/cmake/${PROJECT_NAME}/${PROJECT_NAME}Config.cmake
-#   * <prefix>/lib/cmake/${PROJECT_NAME}${PROJECT_NAME}ConfigVersion.cmake
-install(FILES "${popsift_cmake_project_config}" "${popsift_cmake_version_config}"
-        DESTINATION "${popsift_config_install_dir}")
-
-# Config
-#   * <prefix>/lib/cmake/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake
-install(EXPORT "${popsift_targets_export_name}"
-        NAMESPACE "${popsift_namespace}"
-        DESTINATION "${popsift_config_install_dir}")
-
-# install the config and version generated files
-install( FILES "${popsift_config_header_name}"
-		DESTINATION "${popsift_install_dir_generated}")
-
-install( FILES "${popsift_version_header_name}"
-		DESTINATION "${popsift_install_dir_generated}")
-
-# Generate ${PROJECT_NAME}Targets.cmake in the build directory to use the library without installing it
-export(TARGETS popsift FILE "${popsift_generated_dir}/${popsift_targets_export_name}.cmake")
 
 if(PopSift_BUILD_EXAMPLES)
   add_subdirectory(application)
