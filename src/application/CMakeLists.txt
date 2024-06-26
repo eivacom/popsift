@@ -3,7 +3,7 @@ if(NOT CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
   cmake_minimum_required(VERSION 3.12)
   project(PopsiftDemo LANGUAGES CXX)
 
-  option(PopSift_BOOST_USE_STATIC_LIBS "Link examples with static Boost libraries" OFF)
+  # option(PopSift_BOOST_USE_STATIC_LIBS "Link examples with static Boost libraries" OFF)
   option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
   include(GNUInstallDirs)
