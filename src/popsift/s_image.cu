@@ -8,7 +8,7 @@
 #include "common/assist.h"
 #include "common/debug_macros.h"
 #include "s_image.h"
-#include "sift_config.h"
+#include "popsift/sift_config.h"
 
 #include <cassert>
 #include <cstdio>

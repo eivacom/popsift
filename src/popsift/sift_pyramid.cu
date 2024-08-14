@@ -8,7 +8,7 @@
 
 #include "common/assist.h"
 #include "common/debug_macros.h"
-#include "sift_config.h"
+#include "popsift/sift_config.h"
 #include "sift_extremum.h"
 #include "sift_pyramid.h"
 

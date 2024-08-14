@@ -10,7 +10,7 @@
 #include "common/sync_queue.h"
 #include "common/device_prop.h"
 #include "sift_conf.h"
-#include "sift_config.h"
+#include "popsift/sift_config.h"
 #include "sift_extremum.h"
 
 #include <cuda_runtime.h>

@@ -8,7 +8,7 @@
 #pragma once
 #include "common/assist.h"
 #include "s_desc_normalize.h"
-#include "sift_config.h"
+#include "popsift/sift_config.h"
 
 using namespace popsift;
 using namespace std;
