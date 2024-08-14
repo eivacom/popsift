@@ -14,7 +14,7 @@
 #include "s_desc_normalize.h"
 #include "s_desc_notile.h"
 #include "s_gradiant.h"
-#include "sift_config.h"
+#include "popsift/sift_config.h"
 #include "sift_constants.h"
 #include "sift_pyramid.h"
 

@@ -10,7 +10,7 @@
 #include "common/excl_blk_prefix_sum.h"
 #include "common/warp_bitonic_sort.h"
 #include "s_gradiant.h"
-#include "sift_config.h"
+#include "popsift/sift_config.h"
 #include "sift_constants.h"
 #include "sift_pyramid.h"
 

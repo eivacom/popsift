@@ -10,7 +10,7 @@
 #include "popsift.h"
 
 #include "gauss_filter.h"
-#include "sift_config.h"
+#include "popsift/sift_config.h"
 #include "sift_pyramid.h"
 #include "common/debug_macros.h"
 
